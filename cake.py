@@ -64,7 +64,7 @@ if __name__== "__main__":
     bits = 12
     while(need_input):
         try:
-            cake_size = int(input("how big is your cake [enter a positive integer] \n"))
+            cake_size = int(input("How big is your cake [enter a positive integer] \n"))
             bits =int(input("How many rounds will the cake been shared [enter a positive integer] \n"))
             if cake_size > 0 and bits > 0:
                 need_input = False
