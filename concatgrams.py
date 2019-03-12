@@ -85,7 +85,7 @@ def main(resultfile="results.txt",wordlist="wordlist.txt",excluded="excluded.txt
                 chain.sort(key=len)
                 if(len(chain[0])) ==1:
                     keycount = [w,str(len(chain))]
-                    msg = ";".join(keycount) +";" + ",".join(chain)
+                    msg = ";".join(keycount) +";" + ",".join(chain) + "\n"
                     #wp.write(w.encode('utf-8') + ";".encode('utf-8') + str(len(chain)).encode('utf-8') + ";".encode('utf-8') + ','.join(chain).encode('utf-8') + "\n".encode('utf-8'))
                     wp.write(msg.encode('utf8'))
 if __name__ == "__main__":
