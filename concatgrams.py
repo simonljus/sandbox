@@ -92,6 +92,6 @@ if __name__ == "__main__":
     ## concatgrams find words that are related. Two words are related if the shorter word can insert at any position and become the other word
     #example an -> can , an -> and
     start = time.time()
-    main(wordlist="wordlistc.txt")
+    main()
     seconds = time.time() - start
     print("took "  + str(seconds) + " seconds")
