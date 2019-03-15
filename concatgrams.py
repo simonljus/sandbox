@@ -1,8 +1,13 @@
+# -*- ecoding: utf-8 -*-
 import sys
 import time
 useFirst=True
 useLast=True
 useAll=True
+startingCharacters="iåö"
+if sys.version < "3":
+    startingCharacters = startingCharacters.decode("utf-8")
+print(len(startingCharacters))
 def iterdict(dictionary):
     return dictionary.items() if sys.version >= "3" else dictionary.iteritems()
 def removeAt(string,index):
@@ -37,7 +42,7 @@ def readFile(filename,bans=[],encoding="latin-1"):
             lines = fp.readlines()
             for word in lines:
                 w =word.decode(encoding).strip().lower()
-                if w not in bans:
+                if w not in bans and any(c in w for c in startingCharacters):
                     words[w] = []
     except IOError:
         print("file",filename,"not found")
@@ -61,11 +66,27 @@ def findChains(key,word,combos,variant_i):
                     variant_i +=1
                     key_i = createKey(key,variant_i)
                     combos[key_i] = list(sequence)
-                found =True
                 key_i = createKey(key,variant_i)
-                combos[key_i].append(cut)
-                variant_i = findChains(key,cut,combos,variant_i)  
+                
+                found =True
+                if(len(combos[cut]) > 0):
+                    variant_i = lazyload(key,cut,combos,variant_i,sequence)
+                else:
+                    combos[key_i].append(cut)
+                    variant_i = findChains(key,cut,combos,variant_i)  
     return variant_i
+def lazyload(key,cut,combos,variant_i,sequence):
+    i=0
+    cut_i = createKey(cut,i)
+    while (cut_i in combos):
+        key_i =  createKey(key,variant_i + i)
+        combos[key_i]= list(sequence) + list(combos[cut_i]) + [cut]
+        i +=1
+        cut_i = createKey(cut,i)
+    return variant_i + i -1
+
+
+
 def main(resultfile="results.txt",wordlist="wordlist.txt",excluded="excluded.txt"):
     bans = readFile(excluded,[],"utf-8")
     words = readFile(wordlist,bans.keys())
